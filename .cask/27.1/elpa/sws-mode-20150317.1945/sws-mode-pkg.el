@@ -1,0 +1,2 @@
+;;; Generated package description from /home/atpark333/.emacs.d/.cask/27.1/elpa/sws-mode-20150317.1945/sws-mode.el  -*- no-byte-compile: t -*-
+(define-package "sws-mode" "20150317.1945" "(S)ignificant (W)hite(S)pace mode" 'nil :commit "4dbde92542fc7ad61df38776980905a4721d642e" :authors '(("Brian M. Carlson and other contributors")) :maintainer '("Brian M. Carlson and other contributors") :url "https://github.com/brianc/jade-mode")

@@ -1,0 +1,17 @@
+
+;; ----- smex-history -----
+(
+ set-variable
+ toggle-debug-on-error
+ R
+ ag
+ cd
+ 5x5
+ arp
+)
+
+;; ----- smex-data -----
+(
+ (toggle-debug-on-error . 1)
+ (set-variable . 1)
+)

@@ -1,0 +1,2 @@
+;;; Generated package description from /home/atpark333/.emacs.d/.cask/27.1/elpa/helm-ag-20200907.249/helm-ag.el  -*- no-byte-compile: t -*-
+(define-package "helm-ag" "20200907.249" "The silver searcher with helm interface" '((emacs "25.1") (helm "2.0")) :commit "487a0cef66eb44f3b0596a0b6903337707ec41a6" :authors '(("Syohei YOSHIDA" . "syohex@gmail.com")) :maintainer '("Syohei YOSHIDA" . "syohex@gmail.com") :url "https://github.com/syohex/emacs-helm-ag")
