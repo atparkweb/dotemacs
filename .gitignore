@@ -1,1 +1,6 @@
 .cask/
+elpa/
+auto-save-list/
+transient/
+projectile-bookmarks.eld
+smex-items
