@@ -599,6 +599,7 @@
           (add-to-list 'auto-mode-alist '("\\.html.twig\\'" . web-mode))
           (add-to-list 'auto-mode-alist '("\\.html.jsx\\'" . web-mode))
           (add-to-list 'auto-mode-alist '("\\.tag\\'" . web-mode))
+          (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
           (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
           (add-to-list 'magic-mode-alist '("\/\*\*.*@jsx" . web-mode))
 
@@ -628,6 +629,8 @@
                 (setq-local helm-dash-docsets '("Javascript" "HTML" "CSS" "Lo-Dash" "jQuery" "Bootstrap_3"))))
             (add-hook 'web-mode-hook (lambda () (yas-activate-extra-mode 'js-mode)))
             (add-hook 'web-mode-hook 'rainbow-mode)
+	    (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+	    (setq web-mode-markup-indent-offset 4)
             (define-key prog-mode-map (kbd "C-x /") 'web-mode-element-close)))
 
 (use-package fish-mode
