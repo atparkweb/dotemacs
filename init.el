@@ -20,7 +20,7 @@
  '(custom-safe-themes
    '("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
  '(package-selected-packages
-   '(rust-mode tide company diminish evil flycheck-ledger company-ghc ghc yaml-mode puppet-mode lua-mode markdown-mode stylus-mode fish-mode helm-flycheck helm-swoop helm-dash helm-ag helm-projectile helm git-gutter persp-projectile perspective neotree autopair rainbow-mode smart-mode-line yasnippet web-mode use-package typescript-mode smex smartparens scss-mode rainbow-delimiters projectile prodigy popwin php-mode pallet nyan-mode multiple-cursors magit linum-relative less-css-mode ledger-mode js2-mode idle-highlight-mode htmlize haml-mode flycheck-elm flycheck-cask expand-region exec-path-from-shell evil-surround evil-snipe evil-search-highlight-persist evil-org evil-matchit evil-leader evil-commentary ess emmet-mode elm-mode editorconfig drag-stuff dockerfile-mode coffee-mode alchemist))
+   '(rust-mode tide company diminish evil flycheck-ledger company-ghc ghc yaml-mode puppet-mode lua-mode markdown-mode stylus-mode fish-mode helm-flycheck helm-swoop helm-dash helm-ag helm-projectile helm git-gutter persp-projectile perspective neotree autopair rainbow-mode smart-mode-line yasnippet web-mode use-package typescript-mode smex smartparens scss-mode rainbow-delimiters projectile prodigy popwin php-mode pallet nyan-mode multiple-cursors magit linum-relative less-css-mode ledger-mode js2-mode idle-highlight-mode htmlize flycheck-elm flycheck-cask expand-region exec-path-from-shell evil-surround evil-snipe evil-search-highlight-persist evil-matchit evil-leader evil-commentary ess emmet-mode elm-mode editorconfig drag-stuff dockerfile-mode alchemist))
  '(safe-local-variable-values
    '((haskell-process-use-ghci . t)
      (haskell-indent-spaces . 4))))
@@ -117,11 +117,6 @@
   :config (progn
             (setq indent-tabs-mode t)
             (setq tab-width 4)))
-
-(use-package haml-mode
-  :ensure t
-  :config (progn
-            (setq indent-tabs-mode t)))
 
 (use-package scss-mode
   :ensure t)
@@ -723,91 +718,6 @@
           (add-hook 'haskell-mode-hook (lambda ()
                                          (interactive-haskell-mode)
                                          (turn-on-haskell-indentation)))))
-
-;; Org Mode
-;; ================================================================================
-(defvar org-log-done 'time)
-(defvar org-hide-leading-stars nil)
-(defvar org-alphabetical-lists t)
-(defvar org-src-fontify-natively t)  ;; you want this to activate coloring in blocks
-(defvar org-src-tab-acts-natively t) ;; you want this to have completion in blocks
-(defvar org-hide-emphasis-markers t) ;; to hide the *,=, or / markers
-(defvar org-pretty-entities t)       ;; to have \alpha, \to and others display as utf8 http://orgmode.org/manual/Special-symbols.html
-(defvar org-directory "~/.org/")
-(defvar org-agenda-files (list "~/.org/home.org" "~/.org/work.org" "~/.org/notes.org"))
-(defvar org-default-notes-file (concat org-directory "/notes.org"))
-(defvar org-enforce-todo-checkbox-dependencies t)
-(defvar org-enforce-todo-dependencies t)
-(defvar org-todo-keywords '((sequence "TODO" "DOING" "|" "DONE" "CANCELED" "DELEGATED")))
-(defvar org-agenda-files (quote ("~/.org/home.org" "~/.org/work.org" "~/.org/notes.org")))
-(defvar org-todo-keyword-faces
-  '(("TODO" . org-warning)
-     ("DOING" . "white")
-     ("DONE" . "green")
-     ("DELEGATED" . "purple")
-     ("CANCELED" . "red")))
-
-(use-package evil-org
-  :ensure t
-  :init (progn
-          (add-hook 'org-agenda-mode-hook
-            (lambda ()
-              (local-unset-key (kbd ",")) ;; Don't shadow the <leader>
-              ;; Autosave:
-              (add-hook 'auto-save-hook 'org-save-all-org-buffers nil t)
-              (auto-save-mode))))
-  :config (progn
-            (evil-add-hjkl-bindings org-agenda-mode-map 'emacs)
-
-            (evil-leader/set-key "o c" 'org-capture
-              "o a" 'org-agenda
-              "o t" 'org-todo-list)
-
-            (evil-leader/set-key "o b"
-              (lambda ()
-                (interactive)
-                (let ((persp (gethash "org" perspectives-hash)))
-                  (if (null persp)
-                                        ; When perspective doesn't exist
-                    (progn
-                      (persp-switch "org")
-                      (if (file-exists-p "~/.org/home.org")
-                        (progn
-                          (find-file "~/.org/home.org")))
-                      (if (file-exists-p "~/.org/work.org")
-                        (progn
-                          (split-window-right)
-                          (find-file "~/.org/work.org"))))
-                                        ; Or when it already exists
-                    (persp-activate persp)))))
-
-            (evil-leader/set-key-for-mode 'org-mode
-              "d" 'org-deadline
-              "s" 'org-schedule
-              "c" 'org-toggle-checkbox
-              "o" (lambda ()
-                    (interactive)
-                    (evil-org-eol-call (quote org-insert-heading-respect-content))))
-
-            (evil-define-key 'normal org-mode-map
-              (kbd "m") 'org-set-tags
-              (kbd "+") 'org-priority-up)
-
-            (evil-define-key 'normal org-agenda-mode-map
-              (kbd "d") 'org-agenda-deadline
-              (kbd "s") 'org-agenda-schedule
-              (kbd "+") 'org-priority-up
-              (kbd "q") 'org-agenda-Quit
-              (kbd "w") 'org-save-all-org-buffers)
-
-            (evil-define-key 'normal evil-org-mode-map
-              (kbd "ø") '(lambda () (interactive)
-                           (evil-org-eol-call
-                             '(lambda()
-                                (org-insert-heading)
-                                (org-metaright)))))))
-
-(add-hook 'org-mode-hook 'org-indent-mode)
 
 ;; Ledger-mode
 ;; ================================================================================
