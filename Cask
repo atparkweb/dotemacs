@@ -48,6 +48,7 @@
 (depends-on "projectile")
 (depends-on "rainbow-delimiters")
 (depends-on "ruby-mode")
+(depends-on "rust-mode")
 (depends-on "s")
 (depends-on "scss-mode")
 (depends-on "smartparens")
