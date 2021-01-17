@@ -20,7 +20,7 @@
  '(custom-safe-themes
    '("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
  '(package-selected-packages
-   '(rust-mode tide company diminish evil flycheck-ledger company-ghc ghc yaml-mode puppet-mode lua-mode markdown-mode stylus-mode fish-mode helm-flycheck helm-swoop helm-dash helm-ag helm-projectile helm git-gutter persp-projectile perspective neotree autopair rainbow-mode smart-mode-line yasnippet web-mode use-package typescript-mode smex smartparens scss-mode rainbow-delimiters projectile prodigy popwin php-mode pallet nyan-mode multiple-cursors magit linum-relative less-css-mode ledger-mode js2-mode idle-highlight-mode htmlize flycheck-elm flycheck-cask expand-region exec-path-from-shell evil-surround evil-snipe evil-search-highlight-persist evil-matchit evil-leader evil-commentary ess emmet-mode elm-mode editorconfig drag-stuff dockerfile-mode alchemist))
+   '(rust-mode flycheck-rust tide company diminish evil flycheck-ledger company-ghc ghc yaml-mode puppet-mode lua-mode markdown-mode stylus-mode fish-mode helm-flycheck helm-swoop helm-dash helm-ag helm-projectile helm git-gutter persp-projectile perspective neotree autopair rainbow-mode smart-mode-line yasnippet web-mode use-package typescript-mode smex smartparens scss-mode rainbow-delimiters projectile prodigy popwin php-mode pallet nyan-mode multiple-cursors magit linum-relative less-css-mode ledger-mode js2-mode idle-highlight-mode htmlize flycheck-elm flycheck-cask expand-region exec-path-from-shell evil-surround evil-snipe evil-search-highlight-persist evil-matchit evil-leader evil-commentary ess emmet-mode elm-mode editorconfig drag-stuff dockerfile-mode alchemist))
  '(safe-local-variable-values
    '((haskell-process-use-ghci . t)
      (haskell-indent-spaces . 4))))
@@ -787,6 +787,8 @@
             (lambda ()
 	      (setq rust-format-on-save t)
               (setq indent-tabs-mode nil)))))
+(with-eval-after-load 'rust-mode
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 
 ;; Load any local configuration if it exists
