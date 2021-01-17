@@ -3,4 +3,5 @@ elpa/
 auto-save-list/
 transient/
 projectile-bookmarks.eld
+projectile.cache
 smex-items
