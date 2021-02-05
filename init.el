@@ -1,6 +1,8 @@
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-
+;;; package --- Summary
+;;; Commentary:
 ;;; Code:
+
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 (require 'package)
 
@@ -20,7 +22,7 @@
  '(custom-safe-themes
    '("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
  '(package-selected-packages
-   '(rust-mode flycheck-rust tide company diminish evil flycheck-ledger company-ghc ghc yaml-mode puppet-mode lua-mode markdown-mode stylus-mode fish-mode helm-flycheck helm-swoop helm-dash helm-ag helm-projectile helm git-gutter persp-projectile perspective neotree autopair rainbow-mode smart-mode-line yasnippet web-mode use-package typescript-mode smex smartparens scss-mode rainbow-delimiters projectile prodigy popwin php-mode pallet nyan-mode multiple-cursors magit linum-relative less-css-mode ledger-mode js2-mode idle-highlight-mode htmlize flycheck-elm flycheck-cask expand-region exec-path-from-shell evil-surround evil-snipe evil-search-highlight-persist evil-matchit evil-leader evil-commentary ess emmet-mode elm-mode editorconfig drag-stuff dockerfile-mode alchemist))
+   '(rust-mode flycheck-rust tide company diminish evil flycheck-ledger company-ghc ghc yaml-mode puppet-mode lua-mode markdown-mode stylus-mode fish-mode helm-flycheck helm-swoop helm-dash helm-ag helm-projectile helm git-gutter persp-projectile perspective neotree autopair rainbow-mode smart-mode-line yasnippet web-mode use-package typescript-mode smex smartparens scss-mode rainbow-delimiters projectile prodigy popwin php-mode pallet nyan-mode multiple-cursors magit linum-relative less-css-mode ledger-mode js2-mode idle-highlight-mode htmlize flycheck-elm flycheck-cask expand-region exec-path-from-shell evil-surround evil-snipe evil-search-highlight-persist evil-matchit evil-leader evil-commentary ess emmet-mode elm-mode editorconfig drag-stuff dockerfile-mode alchemist, vue-mode))
  '(safe-local-variable-values
    '((haskell-process-use-ghci . t)
      (haskell-indent-spaces . 4))))
@@ -67,7 +69,11 @@
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (setq-default fill-column 80)
 (setq large-file-warning-threshold 100000000)
+
 (column-number-mode 1)
+(when (version<= "26.0.50" emacs-version)
+  (global-display-line-numbers-mode))
+
 (defun on-frame-open (frame)
   (if (not (display-graphic-p frame))
     (set-face-background 'default "unspecified-bg" frame)
@@ -82,6 +88,7 @@
     (set-face-background 'fringe "unspecified-bg" frame)))
 (add-hook 'window-setup-hook 'on-after-init)
 
+(global-undo-tree-mode)
 
 ;; Theme.
 ;; ================================================================================
@@ -110,7 +117,10 @@
 
 ;; Misc.
 ;; ================================================================================
-(use-package undo-tree :diminish undo-tree-mode)
+(use-package undo-tree
+  :diminish undo-tree-mode
+  :init (progn
+    (setq undo-tree-auto-save-history t)))
 
 (use-package php-mode
   :ensure t
@@ -139,6 +149,7 @@
                 evil-overriding-maps nil
                 evil-intercept-maps nil
                 evil-shift-width 2
+    evil-undo-system 'undo-tree
                 evil-esc-delay 0 ; Prevent esc from translating to meta key in terminal mode
                 ; Cursor
                 evil-emacs-state-cursor  '("red" box)
@@ -389,8 +400,38 @@
             (define-key evil-normal-state-map (kbd "] e") 'next-error)
             (define-key evil-normal-state-map (kbd "[ e") 'previous-error)))
 
-(with-eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-elm-setup))
+;;;----------------------------------------
+;;; jsx web-mode flycheck config
+;;;----------------------------------------
+
+;; Disable jshint since I want to use eslint as my checker
+(setq-default flycheck-disable-checkers
+  (append flycheck-disabled-checkers
+    '(javascript-jshint)))
+
+;; Custom flycheck temp files prefix
+(setq-default flycheck-temp-prefix ".flycheck")
+
+;; Use eslint with web-mode for jsx files
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+
+;; disable json-jsonlist checking for json files
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(json-jsonlist)))
+
+;; use local eslint from node_modules before global
+;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
+(defun my/use-eslint-from-node-modules ()
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (eslint (and root
+                      (expand-file-name "node_modules/eslint/bin/eslint.js"
+                                        root))))
+    (when (and eslint (file-executable-p eslint))
+      (setq-local flycheck-javascript-eslint-executable eslint))))
+(add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
 
 ;;;----------------------------------------
 ;;; flymake
@@ -417,8 +458,7 @@
               ;; There doesn't seem to be a way of disabling this; set to the
               ;; largest int available as a workaround (most-positive-fixnum
               ;; equates to 8.5 years on my machine, so it ought to be enough ;-) )
-              (setq flymake-no-changes-timeout most-positive-fixnum)
-              (setq flymake-start-syntax-check-on-newline nil))
+              (setq flymake-no-changes-timeout most-positive-fixnum))
 
           (setq flymake-log-level 3)
           (add-hook 'erlang-mode-hook
@@ -436,8 +476,7 @@
                       (add-to-list 'flymake-allowed-file-name-masks '("\\.es\\'"      flymake-syntaxerl))
 
                       ;; should be the last.
-                      (flymake-mode 1)
-                      ))
+                      (flymake-mode 1)))
           (erlang-flymake-only-on-save)))
 
 ; http://www.emacswiki.org/emacs/FlymakeCursor
@@ -564,14 +603,16 @@
               (lambda ()
                 (interactive)
                 (setq-local helm-dash-docsets
-                  '("AngularJS"
-                     "BackboneJS"
-                     "Lo-Dash"
-                     "Javascript"
+                  '("Javascript"
                      "NodeJS"
-                     "jQuery"
+                     "Vue"
                      "React"
                      "Chai"))))))
+
+
+;; ================================================================================
+;; Web Mode
+;; ================================================================================
 
 (use-package web-mode
   :ensure t
@@ -624,9 +665,18 @@
                 (setq-local helm-dash-docsets '("Javascript" "HTML" "CSS" "Lo-Dash" "jQuery" "Bootstrap_3"))))
             (add-hook 'web-mode-hook (lambda () (yas-activate-extra-mode 'js-mode)))
             (add-hook 'web-mode-hook 'rainbow-mode)
-	    (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
-	    (setq web-mode-markup-indent-offset 4)
+      (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+      (setq web-mode-markup-indent-offset 4)
             (define-key prog-mode-map (kbd "C-x /") 'web-mode-element-close)))
+
+;; for better jsx syntax-highlighting in web-mode
+;; - courtesy of Patrick @halbtuerke
+(defadvice web-mode-highlight-part (around tweak-jsx activate)
+  (if (equal web-mode-content-type "jsx")
+    (let ((web-mode-enable-part-face nil))
+      ad-do-it)
+    ad-do-it)) 
+
 
 (use-package fish-mode
   :ensure t
@@ -654,9 +704,16 @@
   :init (progn
           (setq indent-tabs-mode t)
           (setq tab-width 2)
-					(setq typescript-indent-level 2)
+    (setq typescript-indent-level 2)
           (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescript-mode)))
   :commands typescript-mode)
+
+(use-package vue-mode
+  :init (progn
+    (setq indent-tabs-mode 0)
+    (setq tab-width 2)
+          (add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode)))
+  :commands vue-mode)
 
 (use-package puppet-mode
   :ensure t
@@ -778,6 +835,9 @@
 (use-package elm-mode
   :ensure t)
 
+(with-eval-after-load 'elm-mode
+  '(add-hook 'flycheck-mode-hook #'flycheck-elm-setup))
+
 ;; Rust
 ;; ================================================================================
 (use-package rust-mode
@@ -785,7 +845,7 @@
   :init (progn
           (add-hook 'rust-mode-hook
             (lambda ()
-	      (setq rust-format-on-save t)
+        (setq rust-format-on-save t)
               (setq indent-tabs-mode nil)))))
 (with-eval-after-load 'rust-mode
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
