@@ -1,5 +1,6 @@
 (source gnu)
 (source melpa)
+(source org)
 
 (depends-on "ag")
 (depends-on "alchemist")
@@ -40,6 +41,7 @@
 (depends-on "multiple-cursors")
 (depends-on "neotree")
 (depends-on "nyan-mode")
+(depends-on "org")
 (depends-on "pallet")
 (depends-on "perspective")
 (depends-on "php-mode")

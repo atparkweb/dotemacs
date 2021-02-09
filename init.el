@@ -8,6 +8,7 @@
 
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 
 (require 'cask "/home/atpark333/.cask/cask.el")
 (cask-initialize)
@@ -20,9 +21,78 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
+   '("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
  '(package-selected-packages
-   '(rust-mode flycheck-rust tide company diminish evil flycheck-ledger company-ghc ghc yaml-mode puppet-mode lua-mode markdown-mode stylus-mode fish-mode helm-flycheck helm-swoop helm-dash helm-ag helm-projectile helm git-gutter persp-projectile perspective neotree autopair rainbow-mode smart-mode-line yasnippet web-mode use-package typescript-mode smex smartparens scss-mode rainbow-delimiters projectile prodigy popwin php-mode pallet nyan-mode multiple-cursors magit linum-relative less-css-mode ledger-mode js2-mode idle-highlight-mode htmlize flycheck-elm flycheck-cask expand-region exec-path-from-shell evil-surround evil-snipe evil-search-highlight-persist evil-matchit evil-leader evil-commentary ess emmet-mode elm-mode editorconfig drag-stuff dockerfile-mode alchemist, vue-mode))
+   '(alchemist
+     autopair
+     company
+     company-ghc
+     diminish
+     dockerfile-mode
+     drag-stuff
+     editorconfig
+     elm-mode
+     emmet-mode
+     ess
+     evil
+     evil-commentary
+     evil-leader
+     evil-matchit
+     evil-org
+     evil-search-highlight-persist
+     evil-snipe
+     evil-surround
+     exec-path-from-shell
+     expand-region
+     fish-mode
+     flycheck-cask
+     flycheck-elm
+     flycheck-ledger
+     flycheck-rust
+     ghc
+     git-gutter
+     helm
+     helm-ag
+     helm-dash
+     helm-flycheck
+     helm-projectile
+     helm-swoop
+     htmlize
+     idle-highlight-mode
+     js2-mode
+     ledger-mode
+     less-css-mode
+     linum-relative
+     lua-mode
+     magit
+     markdown-mode
+     multiple-cursors
+     neotree
+     nyan-mode
+     org
+     pallet
+     persp-projectile
+     perspective
+     php-mode
+     popwin
+     prodigy
+     projectile
+     puppet-mode
+     rainbow-delimiters
+     rainbow-mode
+     rust-mode
+     scss-mode
+     smart-mode-line
+     smartparens
+     smex
+     stylus-mode
+     tide
+     typescript-mode
+     use-package
+     web-mode
+     yaml-mode
+     yasnippet
+     vue-mode))
  '(safe-local-variable-values
    '((haskell-process-use-ghci . t)
      (haskell-indent-spaces . 4))))
@@ -49,7 +119,7 @@
 (setq
   backup-by-copying t ; don't clobber symlinks
   backup-directory-alist
-    '(("." . "~/.saves/"))
+    '(("." . "~/.saves/")) ; don't litter my fs tree
   delete-old-versions t
   kept-new-versions 6
   kept-old-versions 2
@@ -120,7 +190,7 @@
 (use-package undo-tree
   :diminish undo-tree-mode
   :init (progn
-    (setq undo-tree-auto-save-history t)))
+    (setq undo-tree-auto-save-history nil)))
 
 (use-package php-mode
   :ensure t
@@ -855,14 +925,6 @@
 (if (file-exists-p (expand-file-name ".emacs.el"))
   (progn
     (load (expand-file-name ".emacs.el"))))
-
-(if (file-exists-p (expand-file-name "README.org"))
-  (progn
-    (add-to-list 'org-agenda-files (expand-file-name "README.org"))))
-
-(if (file-exists-p (expand-file-name "project.org"))
-  (progn
-    (add-to-list 'org-agenda-files (expand-file-name "project.org"))))
 
 (provide 'init)
 ;;; init.el ends here
