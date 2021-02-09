@@ -5,3 +5,4 @@ transient/
 projectile-bookmarks.eld
 projectile.cache
 smex-items
+*.~undo-tree~
