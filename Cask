@@ -31,6 +31,7 @@
 (depends-on "flycheck-cask")
 (depends-on "flycheck-elm")
 (depends-on "flycheck-rust")
+(depends-on "graphql-mode")
 (depends-on "htmlize")
 (depends-on "idle-highlight-mode")
 (depends-on "js2-mode")
