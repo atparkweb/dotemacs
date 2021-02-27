@@ -10,6 +10,7 @@
 (depends-on "dash")
 (depends-on "dockerfile-mode")
 (depends-on "drag-stuff")
+(depends-on "ediprolog")
 (depends-on "editorconfig")
 (depends-on "elixir-mode")
 (depends-on "emmet-mode")
