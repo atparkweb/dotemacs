@@ -37,6 +37,7 @@
 (depends-on "js2-mode")
 (depends-on "json-mode")
 (depends-on "ledger-mode")
+(depends-on "lfe-mode")
 (depends-on "less-css-mode")
 (depends-on "linum-relative")
 (depends-on "magit")
