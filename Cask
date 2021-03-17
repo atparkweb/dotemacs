@@ -41,6 +41,7 @@
 (depends-on "less-css-mode")
 (depends-on "linum-relative")
 (depends-on "magit")
+(depends-on "markdown-mode")
 (depends-on "multiple-cursors")
 (depends-on "neotree")
 (depends-on "nyan-mode")
