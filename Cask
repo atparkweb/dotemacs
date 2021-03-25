@@ -53,6 +53,7 @@
 (depends-on "prodigy")
 (depends-on "projectile")
 (depends-on "rainbow-delimiters")
+(depends-on "rainbow-mode")
 (depends-on "ruby-mode")
 (depends-on "rust-mode")
 (depends-on "s")

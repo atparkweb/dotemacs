@@ -241,12 +241,14 @@
   :commands (rainbow-mode)
   :init (progn
           (add-hook 'css-mode-hook 'rainbow-mode)
+	  (add-hook 'lfe-mode-hook 'rainbow-mode)
           (add-hook 'emacs-lisp-mode-hook 'rainbow-mode)))
 
 (use-package rainbow-delimiters
   :ensure t
   :commands rainbow-delimiters-mode
   :init (progn
+	  (add-hook 'lfe-mode-hook #'rainbow-delimiters-mode)
           (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)))
 
 ;;(use-package linum-relative
@@ -695,6 +697,8 @@
 
 (use-package markdown-mode
   :ensure t
+  :init (progn
+	  (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
   :commands markdown-mode)
 
 (use-package lua-mode
@@ -801,7 +805,7 @@
   :ensure t
   :config (progn
 	    (setq auto-mode-alist
-		  (cons '("\\.lfe\\'" . lfe-mode) auto-coding-alist))))
+		  (cons '("\\.lfe\\'" . lfe-mode) auto-mode-alist))))
 
 ;; Ledger-mode
 ;; ================================================================================
