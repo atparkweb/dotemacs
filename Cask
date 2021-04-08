@@ -64,6 +64,5 @@
 (depends-on "typescript-mode")
 (depends-on "undo-tree")
 (depends-on "use-package")
-(depends-on "vue-mode")
 (depends-on "web-mode")
 (depends-on "yasnippet")
