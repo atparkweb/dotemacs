@@ -23,7 +23,7 @@
  '(custom-safe-themes
    '("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
  '(package-selected-packages
-   '(alchemist autopair company company-ghc diminish dockerfile-mode drag-stuff ediprolog editorconfig elm-mode emmet-mode ess evil evil-commentary evil-leader evil-matchit evil-org evil-search-highlight-persist evil-snipe evil-surround exec-path-from-shell expand-region fish-mode flycheck-cask flycheck-elm flycheck-ledger flycheck-rust ghc git-gutter graphql-mode helm helm-ag helm-dash helm-flycheck helm-projectile helm-swoop htmlize idle-highlight-mode js2-mode ledger-mode less-css-mode lfe-mode linum-relative lua-mode magit markdown-mode multiple-cursors neotree nyan-mode org pallet persp-projectile perspective php-mode popwin prodigy projectile puppet-mode rainbow-delimiters rainbow-mode rust-mode scss-mode smart-mode-line smartparens smex stylus-mode tide typescript-mode use-package web-mode yaml-mode yasnippet))
+   '(alchemist autopair company company-ghc diminish dockerfile-mode drag-stuff ediprolog editorconfig elm-mode emmet-mode ess evil evil-commentary evil-leader evil-matchit evil-org evil-search-highlight-persist evil-snipe evil-surround exec-path-from-shell expand-region fish-mode flycheck-cask flycheck-elm flycheck-ledger flycheck-rust ghc git-gutter graphql-mode helm helm-ag helm-flycheck helm-projectile helm-swoop htmlize idle-highlight-mode js2-mode ledger-mode less-css-mode lfe-mode linum-relative lua-mode magit markdown-mode multiple-cursors neotree nyan-mode org pallet persp-projectile perspective php-mode popwin prodigy projectile puppet-mode rainbow-delimiters rainbow-mode rust-mode scss-mode smart-mode-line smartparens smex stylus-mode tide typescript-mode use-package web-mode yaml-mode yasnippet))
  '(safe-local-variable-values
    '((haskell-process-use-ghci . t)
      (haskell-indent-spaces . 4))))
@@ -516,19 +516,6 @@
   :init (progn
           (define-key evil-normal-state-map (kbd "C-s") 'helm-projectile-ag)))
 
-(use-package helm-dash
-  :ensure t
-  :init (progn
-          (setq dash-docs-docsets-path "~/.docset")
-          (setq dash-docs-common-docsets '("Lo-Dash" "HTML" "CSS"))
-          (evil-leader/set-key "f" 'helm-dash-at-point)
-          (define-key evil-normal-state-map (kbd "C-f") 'helm-dash))
-  :config (progn
-            (add-hook 'prog-mode-hook
-              (lambda ()
-                (interactive)
-                (setq helm-current-buffer (current-buffer))))))
-
 (use-package helm-swoop
   :ensure t
   :commands (helm-swoop)
@@ -580,7 +567,6 @@
   :ensure t
   :diminish js2-minor-mode
   :commands (js2-mode js-mode js2-minor-mode)
-  :defines helm-dash-docsets
   :init (progn
           (setq indent-tabs-mode t)
           (setq tab-width 2)
@@ -601,17 +587,6 @@
                                         ; Use js2-mode as a minor mode (preferred way)
           (add-hook 'js-mode-hook 'js2-minor-mode)
           (add-to-list 'interpreter-mode-alist '("node" . js-mode)))
-  :config (progn
-            (add-hook 'js2-minor-mode-hook
-              (lambda ()
-                (interactive)
-                (setq-local helm-dash-docsets
-                  '("Javascript"
-                     "NodeJS"
-                     "Vue"
-                     "React"
-                     "Chai"))))))
-
 
 ;; ================================================================================
 ;; Web Mode
@@ -663,10 +638,6 @@
                     (add-hook 'css-mode-hook  'emmet-mode)
                     (add-hook 'web-mode-hook 'emmet-mode))))
   :config (progn
-            (add-hook 'web-mode-hook
-              (lambda ()
-                (interactive)
-                (setq-local helm-dash-docsets '("Javascript" "HTML" "CSS" "Lo-Dash" "jQuery" "Bootstrap_3"))))
             (add-hook 'web-mode-hook (lambda () (yas-activate-extra-mode 'js-mode)))
             (add-hook 'web-mode-hook 'rainbow-mode)
       (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
