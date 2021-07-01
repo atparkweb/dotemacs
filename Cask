@@ -61,6 +61,7 @@
 (depends-on "smartparens")
 (depends-on "smex")
 (depends-on "tern")
+(depends-on "terraform-mode")
 (depends-on "typescript-mode")
 (depends-on "undo-tree")
 (depends-on "use-package")
