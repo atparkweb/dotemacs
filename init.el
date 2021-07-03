@@ -169,6 +169,8 @@
                         (evil-leader/set-key "w" 'save-buffer)
                         (evil-leader/set-key "i" 'evil-window-move-far-left)
                         (evil-leader/set-key "a" 'align-regexp)
+			(evil-leader/set-key "/" 'comment-region)
+			(evil-leader/set-key "'" 'uncomment-region)
                         (evil-leader/set-key "SPC" 'evil-search-highlight-persist-remove-all)))
 
             (use-package evil-search-highlight-persist
@@ -203,7 +205,7 @@
             (define-key evil-normal-state-map (kbd "C-k") 'evil-window-prev)
             (define-key evil-normal-state-map (kbd "C-l") 'evil-window-increase-width)
             (define-key evil-normal-state-map (kbd "C-h") 'evil-window-decrease-width)
-            (define-key evil-insert-state-map (kbd "C-j") 'comment-indent-new-line)
+            ;(define-key evil-insert-state-map (kbd "C-j") 'comment-indent-new-line)
 
             (define-key evil-normal-state-map (kbd "-")
               (lambda ()
