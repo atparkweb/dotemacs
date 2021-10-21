@@ -8,7 +8,6 @@
 
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 
 (require 'cask "/home/atpark333/.cask/cask.el")
 (cask-initialize)
@@ -285,12 +284,6 @@
                                                    ("*Warnings*" :noselect t)
                                                    ("*Miniedit Help*" :noselect t)
                                                    ("*undo-tree*" :width 60 :position right)))))
-
-(use-package autopair
-  :ensure t
-  :diminish autopair-mode
-  :init (autopair-global-mode))
-
 
 ;; File and buffer management
 ;; ================================================================================
@@ -574,9 +567,6 @@
 
 ;; LANGUAGE PACKS
 ;; ================================================================================
-
-(use-package prisma-mode
-  :load-path "vendor/emacs-prisma-mode")
 
 (use-package js2-mode
   :ensure t
