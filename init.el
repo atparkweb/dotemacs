@@ -43,8 +43,7 @@
 (setq highlight-trailing-whitespace t)
 (setq standard-indent 2)
 (setq js-indent-level 2)
-(setq make-backup-files nil)
-(setq backup-inhibited t)
+(setq create-lockfiles nil)
 (setq
   backup-by-copying t ; don't clobber symlinks
   backup-directory-alist
@@ -57,6 +56,8 @@
 (auto-save-mode nil) ;; Disable autosaving
 (show-paren-mode t) ;; Show matching parens
 (setq scroll-margin 5 scroll-conservatively 9999 scroll-step 1) ;; Smooth scrolling
+(setq split-height-threshold nil)
+(setq split-width-threshold 0)
 (setq gc-cons-threshold 20000000) ;; Increase garbage collection limit
 (setq visible-bell 1)
 (setq ring-bell-function 'ignore)
@@ -132,6 +133,16 @@
 
 (use-package editorconfig
   :ensure t)
+
+(use-package lsp-mode
+  :ensure t)
+
+(use-package lsp-jedi
+  :ensure t
+  :config
+  (with-eval-after-load "lsp-mode"
+    (add-to-list 'lsp-disabled-clients 'pyls)
+    (add-to-list 'lsp-enabled-clients 'jedi)))
 
 (use-package smex
   :ensure t
@@ -520,6 +531,7 @@
   :ensure t
   :commands (helm-swoop)
   :init (progn
+	  (setq helm-swoop-split-direction 'split-window-horizontally)
           (evil-leader/set-key "sb" 'helm-swoop)
           (evil-leader/set-key "sa" 'helm-multi-swoop)))
 
@@ -562,6 +574,9 @@
 
 ;; LANGUAGE PACKS
 ;; ================================================================================
+
+(use-package prisma-mode
+  :load-path "vendor/emacs-prisma-mode")
 
 (use-package js2-mode
   :ensure t
@@ -844,6 +859,11 @@
               (setq indent-tabs-mode nil)))))
 (with-eval-after-load 'rust-mode
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+
+;; CSharp
+;; ================================================================================
+(use-package csharp-mode
+  :ensure t)
 
 
 ;; Load any local configuration if it exists
