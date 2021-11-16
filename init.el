@@ -696,7 +696,11 @@
 
 (use-package yaml-mode
   :ensure t
-  :commands yaml-mode)
+  :commands yaml-mode
+  :init (progn
+          (add-hook 'yaml-mode-hook
+            (lambda ()
+              (define-key yaml-mode-map "\C-m" 'newline-and-indent))))
 
 (defvar my-ghc-initialized nil)
 (use-package ghc
