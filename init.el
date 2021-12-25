@@ -34,14 +34,40 @@
 (setq current-language-environment "UTF-8")
 (setenv "LC_CTYPE" "UTF-8")
 
+; TABS CONFIG
+(setq custom-tab-width 2)
+
+(setq-default electric-indent-inhibit t)
+
+(defun disable-tabs ()
+  "Disable tabs mode."
+  (setq indent-tabs-mode nil))
+(defun enable-tabs ()
+  "Enable tabs mode."
+  (setq indent-tabs-mode t)
+  (setq tab-width custom-tab-width))
+(add-hook 'emacs-lisp-mode 'disable-tabs)
+(add-hook 'lisp-mode-hook 'disable-tabs)
+
+;; Make backspace properly erase the full tab
+(setq backward-delete-char-untabify-method 'hungry)
+(setq-default evil-shift-width custom-tab-width)
+
+;; Visualize tabs as a pipe characters - "|"
+(setq whitespace-style '(face tabs tab-mark trailing))
+(custom-set-faces
+  '(whitespace-tab ((t (:foreground "#636363")))))
+(setq whitespace-display-mappings
+  '((tab-mark 9 [124 9] [92 9]))) ; 124 = ASCII '\|'
+(global-whitespace-mode)
+; END TABS CONFIG
+
 ;; Other stuff
 (setq inhibit-startup-screen t)
 (menu-bar-mode -1) ;; Disable menu bar
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
 (setq highlight-trailing-whitespace t)
-(setq standard-indent 2)
-(setq js-indent-level 2)
 (setq create-lockfiles nil)
 (setq
   backup-by-copying t ; don't clobber symlinks
@@ -157,7 +183,6 @@
           (setq evil-want-C-u-scroll t
                 evil-overriding-maps nil
                 evil-intercept-maps nil
-                evil-shift-width 2
     evil-undo-system 'undo-tree
                 evil-esc-delay 0 ; Prevent esc from translating to meta key in terminal mode
                 ; Cursor
@@ -568,31 +593,6 @@
 ;; LANGUAGE PACKS
 ;; ================================================================================
 
-(use-package js2-mode
-  :ensure t
-  :diminish js2-minor-mode
-  :commands (js2-mode js-mode js2-minor-mode)
-  :init (progn
-          (setq indent-tabs-mode t)
-          (setq tab-width 2)
-          (use-package tern
-            :diminish " T"
-            :commands (tern-mode)
-            :ensure t
-            :init (progn
-                    (add-hook 'js-mode-hook 'tern-mode)
-                    (add-hook 'js-mode-hook (lambda()
-                                                   ;; Scan the file for nested codeblocks
-                                                   (imenu-add-menubar-index)
-                                                   ;; Activate the folding mode
-                                                   (hs-minor-mode t)))))
-          (setq js2-highlight-level 3)
-          (setq js2-mode-show-parse-errors nil)
-          (setq js2-mode-show-strict-warnings nil)
-                                        ; Use js2-mode as a minor mode (preferred way)
-          (add-hook 'js-mode-hook 'js2-minor-mode)
-          (add-to-list 'interpreter-mode-alist '("node" . js-mode)))
-
 ;; ================================================================================
 ;; Web Mode
 ;; ================================================================================
@@ -618,10 +618,9 @@
           (add-to-list 'auto-mode-alist '("\\.html.twig\\'" . web-mode))
           (add-to-list 'auto-mode-alist '("\\.html.jsx\\'" . web-mode))
           (add-to-list 'auto-mode-alist '("\\.tag\\'" . web-mode))
-          (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
-          (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+          (add-to-list 'auto-mode-alist '("\\.js[x]?\\'" . web-mode))
           (add-to-list 'magic-mode-alist '("\/\*\*.*@jsx" . web-mode))
-	  (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
+          (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
 
           (flycheck-define-checker jsxhint
             "A JSX syntax and style checker based on JSXHint."
@@ -629,23 +628,12 @@
             :error-patterns ((error line-start (1+ nonl) ": line " line ", col " column ", " (message) line-end))
             :predicate jsxhint-predicate
             :modes (web-mode))
-
-          (add-to-list 'flycheck-checkers 'jsxhint)
-
-          (use-package emmet-mode
-            ;; Can't diminish this, because the logic relies on
-            ;; reading the mode-line.
-            ;; :diminish " e"
-            :ensure t
-            :commands emmet-mode
-            :init (progn
-                    (add-hook 'sgml-mode-hook 'emmet-mode)
-                    (add-hook 'css-mode-hook  'emmet-mode)
-                    (add-hook 'web-mode-hook 'emmet-mode))))
+          (add-to-list 'flycheck-checkers 'jsxhint))
   :config (progn
             (add-hook 'web-mode-hook (lambda () (yas-activate-extra-mode 'js-mode)))
             (add-hook 'web-mode-hook 'rainbow-mode)
       (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+      (setq js-indent-level 2)
       (setq web-mode-markup-indent-offset 4)
             (define-key prog-mode-map (kbd "C-x /") 'web-mode-element-close)))
 
@@ -675,7 +663,7 @@
 (use-package markdown-mode
   :ensure t
   :init (progn
-	  (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
+    (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
   :commands markdown-mode)
 
 (use-package lua-mode
@@ -685,8 +673,7 @@
 (use-package typescript-mode
   :init (progn
           (setq indent-tabs-mode t)
-          (setq tab-width 2)
-    (setq typescript-indent-level 2)
+          (setq typescript-indent-level custom-tab-width)
           (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescript-mode)))
   :commands typescript-mode)
 
